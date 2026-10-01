@@ -1,0 +1,15 @@
+{
+  "name": "SJBC — Tournament Manager",
+  "short_name": "SJBC",
+  "description": "Badminton tournaments with live scores, groups, ELO and knockout brackets.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0A0C10",
+  "theme_color": "#0A0C10",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

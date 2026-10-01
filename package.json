@@ -1,0 +1,21 @@
+{
+  "name": "sjbc-tournament-manager",
+  "version": "1.0.0",
+  "description": "SJBC — badminton tournament manager (Node + PostgreSQL, Google sign-in, live scores)",
+  "private": true,
+  "main": "server/index.js",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.js",
+    "dev": "node --watch --env-file-if-exists=.env server/index.js",
+    "test": "node --env-file-if-exists=.env test/api.test.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^5.2.1",
+    "google-auth-library": "^11.1.0",
+    "pg": "^8.23.1"
+  }
+}

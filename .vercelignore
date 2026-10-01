@@ -1,0 +1,10 @@
+node_modules
+data
+test
+scripts
+.env
+.env.*
+*.html.bak
+SJBC*.html
+Dockerfile
+README.md
