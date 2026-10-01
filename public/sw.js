@@ -1,5 +1,5 @@
 /* Offline shell: network first, fall back to cache. API calls are never cached. */
-const CACHE = 'sjbc-shell-v2';
+const CACHE = 'sjbc-shell-v3';
 const SHELL = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.json', 'icon.svg'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => {

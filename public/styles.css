@@ -30,7 +30,7 @@ svg{flex-shrink:0}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 .brand{display:flex;align-items:center;gap:10px;padding:4px 8px 28px}
-.brand span{font-weight:700;font-size:19px;letter-spacing:.02em}
+.brand span{font-weight:700;font-size:15px;line-height:1.2;letter-spacing:.02em}
 .brand small{display:block;font-family:'Manrope';font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;margin-top:-2px}
 .nav-label{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--dim);padding:0 12px 10px;text-transform:uppercase}
 .nav{display:flex;flex-direction:column;gap:2px}

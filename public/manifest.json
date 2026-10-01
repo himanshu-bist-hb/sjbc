@@ -1,6 +1,6 @@
 {
-  "name": "SJBC — Tournament Manager",
-  "short_name": "SJBC",
+  "name": "Sanjay Jheel Badminton Club",
+  "short_name": "Sanjay Jheel BC",
   "description": "Badminton tournaments with live scores, groups, ELO and knockout brackets.",
   "start_url": "./",
   "scope": "./",

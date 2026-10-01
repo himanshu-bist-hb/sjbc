@@ -470,7 +470,7 @@ function renderShell(p) {
   const nPending = isAdmin() && USERS ? USERS.filter(u => u.role === 'pending' && u.joined).length : 0;
   const nav = NAV.map(([h, l, i]) => [h, h === 'settings' && !ME ? 'Sign in' : l, i]);
   $('#sidebar').innerHTML = `
-    <div class="brand">${LOGO()}<div><span class="num">SJBC</span><small>Badminton Club</small></div></div>
+    <div class="brand">${LOGO()}<div><span class="num">Sanjay Jheel Badminton Club</span></div></div>
     <div class="nav-label">Menu</div>
     <nav class="nav">
       ${nav.map(([h, l, i]) => `<a href="#/${h}" class="${active === h ? 'on' : ''}">${ic(i, 19)}${l}${h === 'tournaments' && S.tournaments.length ? `<span class="cnt">${S.tournaments.length}</span>` : ''}</a>`).join('')}
@@ -524,7 +524,7 @@ function render(fresh) {
   lastKey = key;
   if (keepScroll) { main.scrollTop = sy; window.scrollTo(0, wy); }
   else { main.scrollTop = 0; window.scrollTo(0, 0); }
-  document.title = (k === 't' && T(p[1]) ? T(p[1]).name + ' · ' : '') + 'SJBC — Tournament Manager';
+  document.title = (k === 't' && T(p[1]) ? T(p[1]).name + ' · ' : '') + 'Sanjay Jheel Badminton Club';
   if (k === 'login' && READY && !ME) setupLogin();
 }
 function gate(what) {
@@ -545,7 +545,7 @@ function pageLogin() {
   if (ME) { setTimeout(() => go('#/'), 0); return splash('Signed in'); }
   const noAuth = !CFG.google && !CFG.devLogin;
   return `<div class="page" style="max-width:460px;padding-top:4vh">
-    <div style="text-align:center;margin-bottom:26px">${LOGO(56)}<h1 class="num" style="font-size:30px;margin-top:14px">Sign in to SJBC</h1><p class="muted" style="margin-top:6px">Anyone can watch scores without signing in. Sign in to create tournaments and enter results.</p></div>
+    <div style="text-align:center;margin-bottom:26px">${LOGO(56)}<h1 class="num" style="font-size:30px;margin-top:14px">Sign in to Sanjay Jheel Badminton Club</h1><p class="muted" style="margin-top:6px">Anyone can watch scores without signing in. Sign in to create tournaments and enter results.</p></div>
     <div class="card">
       ${CFG.google ? `<a class="gbtn" href="/auth/google">${G_LOGO}Continue with Google</a>` : ''}
       ${noAuth ? `<div class="note warn" style="margin:0">${ic('info', 16)}<span>Google sign-in isn't configured on this server yet. Set <code>GOOGLE_CLIENT_ID</code> and <code>GOOGLE_CLIENT_SECRET</code> in the server environment.</span></div>` : ''}
@@ -691,7 +691,7 @@ function pageDashboard() {
   const active = ts.filter(t => t.stage !== 'done').length;
   const today = ts.reduce((s, t) => s + allMatches(t).filter(m => m.status === 'done' && isToday(m.doneAt)).length, 0);
   const live = ts.reduce((s, t) => s + progress(t).live, 0);
-  if (!ts.length) return `<div class="page">${head('Welcome to SJBC', 'Your tournaments', `<a href="#/new" class="btn btn-primary">${ic('plus', 16, 2.4)}New tournament</a>`)}
+  if (!ts.length) return `<div class="page">${head('Welcome to Sanjay Jheel Badminton Club', 'Your tournaments', `<a href="#/new" class="btn btn-primary">${ic('plus', 16, 2.4)}New tournament</a>`)}
     <div class="empty-big">${LOGO(54)}<h2 class="num">${canEdit() ? 'Let’s get the first tournament going' : 'No tournaments yet'}</h2>
     <p>${canEdit() ? 'Create groups, add singles or doubles teams, track every score and let the ELO ratings update themselves — all the way to the final.' : 'Check back soon — live scores will appear here as soon as a tournament is created.'}</p>
     <div class="row wrap" style="justify-content:center;gap:12px"><a href="#/new" class="btn btn-primary">${ic('plus', 16, 2.4)}Create tournament</a>
@@ -1291,7 +1291,7 @@ const ACT = {
   retry: () => boot(),
   share: el => {
     const url = location.origin + location.pathname + '#/t/' + el.dataset.t;
-    if (navigator.share && matchMedia('(max-width:900px)').matches) navigator.share({ title: (T(el.dataset.t) || {}).name || 'SJBC', url }).catch(() => {});
+    if (navigator.share && matchMedia('(max-width:900px)').matches) navigator.share({ title: (T(el.dataset.t) || {}).name || 'Sanjay Jheel Badminton Club', url }).catch(() => {});
     else if (navigator.clipboard) navigator.clipboard.writeText(url).then(() => toast('Link copied — anyone can open it to watch live'), () => toast(url));
     else toast(url);
   },
@@ -1398,7 +1398,7 @@ async function seedDemo() {
     m.games = games; m.status = 'done'; m.seq = ++t.seq; m.doneAt = Date.now() - (toPlay - i) * 600000; m.court = String(1 + (i % 4));
   });
   const names = ['Arjun Mehta', 'Sanya Kapoor', 'Dev Malhotra', 'Kiran Bhat', 'Aarav Nair', 'Ishita Rao', 'Yusuf Khan', 'Riya Desai', 'Tanvi Mehra', 'Omkar Patil'];
-  const t2 = { id: uid(), name: "SJBC Members' Singles Ladder", venue: 'Indoor Hall 2', startDate: '2026-10-24', endDate: '2026-10-25', seq: 0, type: 'singles', groups: 2, matchesPerTeam: 3, bestOf: 3, points: 21, knockout: 'top2', thirdPlace: false, koBestOf: 3, stage: 'setup', teams: names.map((n, i) => mk(n, null, 1700 - i * 35)), matches: [], ko: null, createdAt: Date.now() - 1000, updatedAt: Date.now() - 1000 };
+  const t2 = { id: uid(), name: "Sanjay Jheel Members' Singles Ladder", venue: 'Indoor Hall 2', startDate: '2026-10-24', endDate: '2026-10-25', seq: 0, type: 'singles', groups: 2, matchesPerTeam: 3, bestOf: 3, points: 21, knockout: 'top2', thirdPlace: false, koBestOf: 3, stage: 'setup', teams: names.map((n, i) => mk(n, null, 1700 - i * 35)), matches: [], ko: null, createdAt: Date.now() - 1000, updatedAt: Date.now() - 1000 };
   await createOnServer(t2); await createOnServer(t);
 }
 
@@ -1465,7 +1465,7 @@ document.addEventListener('change', ev => {
         const d = JSON.parse(rd.result);
         if (!d || !Array.isArray(d.tournaments)) throw new Error('bad');
         confirmBox('Replace current data?', `This backup has ${d.tournaments.length} tournament${d.tournaments.length === 1 ? '' : 's'}. Everything currently on the server will be replaced, for everyone.`, 'Import', () => { api('POST', '/api/admin/import', d).then(async () => { await loadAll(); toast('Backup imported'); go('#/'); render(true); }).catch(e => toast(e.message, 'err')); });
-      } catch (e) { toast('That file is not a valid SJBC backup', 'err'); }
+      } catch (e) { toast('That file is not a valid Sanjay Jheel Badminton Club backup', 'err'); }
     };
     rd.readAsText(file); el.value = '';
   }
