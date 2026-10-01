@@ -321,7 +321,7 @@ function standings(t, g, e) {
     if (s.winner === 'a') { A.w++; B.l++; A.form.push('W'); B.form.push('L'); } else { B.w++; A.l++; A.form.push('L'); B.form.push('W'); }
   });
   rows.forEach(r => { r.gd = r.gw - r.gl; r.pd = r.pf - r.pa; });
-  rows.sort((a, b) => b.w - a.w || b.gd - a.gd || b.pd - a.pd || b.elo - a.elo || tname(a.team).localeCompare(tname(b.team)));
+  rows.sort((a, b) => b.w - a.w || b.elo - a.elo || b.pd - a.pd || tname(a.team).localeCompare(tname(b.team)));
   rows.forEach((r, i) => { r.rank = i + 1; });
   return rows;
 }
@@ -393,7 +393,7 @@ function qualifiers(t) {
   const e = computeElo(t);
   const per = [];
   for (let g = 0; g < t.groups; g++) per.push(standings(t, g, e));
-  const cmp = (a, b) => b.w - a.w || b.gd - a.gd || b.pd - a.pd || b.elo - a.elo;
+  const cmp = (a, b) => b.w - a.w || b.elo - a.elo || b.pd - a.pd;
   const winners = per.map(s => s[0]).filter(Boolean).sort(cmp);
   const runners = per.map(s => s[1]).filter(Boolean).sort(cmp);
   let list = t.knockout === 'top1' ? winners : t.knockout === 'top4' ? [...winners, ...runners].slice(0, 4) : [...winners, ...runners];
@@ -974,7 +974,7 @@ function tabScoreboard(t) {
   <div class="split"><div>
     <div class="card sb"><div class="sb-row h"><span>#</span><span>${t.type === 'singles' ? 'Player' : 'Team'}</span><span class="c hm">P</span><span class="c hm">W</span><span class="c hm">L</span><span class="c hm">Games</span><span class="c">ELO</span><span class="c">Δ</span><span class="c hm">Form</span></div>
     ${rows.map(row).join('') || '<div class="empty" style="margin:16px">No entries in this group</div>'}</div>
-    <div class="legend">${nq ? `<span><i></i>Qualifying position${nq > 1 ? 's' : ''}</span>` : ''}<span>Ranked by wins → game difference → point difference → ELO</span><span>${done}/${gm.length} matches played</span></div>
+    <div class="legend">${nq ? `<span><i></i>Qualifying position${nq > 1 ? 's' : ''}</span>` : ''}<span>Ranked by wins → ELO → point difference</span><span>${done}/${gm.length} matches played</span></div>
   </div>
   <div class="stack">
     ${live.length ? `<section class="card"><div class="sec-head" style="margin-bottom:14px"><h2 class="sec num" style="font-size:16px">Live now</h2><span class="badge live"><i class="dot"></i>Live</span></div><div class="stack" style="gap:10px">${live.map(m => matchCard(t, m, e)).join('')}</div></section>` : ''}
@@ -990,7 +990,7 @@ function bmTeam(t, id, side, m, bm) {
   const tm = teamOf(t, id);
   const inf = id && t.ko.info[id];
   const s = gstats(m);
-  const generic = tm && inf && m.round === 1 && !t.matches.some(x => x.status === 'done');
+  const generic = tm && inf && m.round === 1 && !groupsDone(t);
   if (generic) return `<div class="bt tbd"><span class="av tbd">?</span><div class="nm"><span>${ordinal(inf.rank)} team of Group ${GL(inf.g)}</span></div></div>`;
   const isW = m.status === 'done' && s.winner === side;
   const isL = m.status === 'done' && s.winner && s.winner !== side;
@@ -1014,7 +1014,7 @@ function tabBracket(t) {
     const pr = progress(t);
     return `<div class="card" style="max-width:760px"><div class="eyebrow">${KO_TEXT[t.knockout][0]}</div><h2 class="num" style="font-size:24px;margin-bottom:6px">${done ? 'Groups complete — build the bracket' : 'Projected qualifiers'}</h2>
       <p class="muted" style="margin-bottom:18px">${done ? 'Seeds are taken from the final group standings.' : `${pr.gtotal - pr.gdone} group match${pr.gtotal - pr.gdone === 1 ? '' : 'es'} still to play. This is how it looks right now.`}</p>
-      ${pr.gdone === 0 ? `<div class="lb" style="margin-bottom:18px">${genericQualifiers(t).map((s, i) => `<div class="lb-row"><span class="rk num">${i + 1}</span><span class="av tbd">?</span><span class="nm">${s}</span><span class="dim" style="font-size:12px;font-weight:700">Awaiting results</span></div>`).join('')}</div>`
+      ${!done ? `<div class="lb" style="margin-bottom:18px">${genericQualifiers(t).map((s, i) => `<div class="lb-row"><span class="rk num">${i + 1}</span><span class="av tbd">?</span><span class="nm">${s}</span><span class="dim" style="font-size:12px;font-weight:700">Awaiting results</span></div>`).join('')}</div>`
       : q.list.length ? `<div class="lb" style="margin-bottom:18px">${q.list.map((id, i) => { const tm = teamOf(t, id), inf = q.info[id]; return `<div class="lb-row"><span class="rk num">${i + 1}</span>${teamAv(tm)}<span class="nm">${esc(tname(tm))}</span><span class="dim" style="font-size:12px;font-weight:700">Grp ${GL(inf.g)} · ${inf.rank === 1 ? '1st' : '2nd'}</span></div>`; }).join('')}</div>` : ''}
       ${q.list.length < 2 ? `<div class="note warn">${ic('info', 16)}<span>At least 2 qualifiers are needed. ${t.knockout === 'top1' ? 'With “group winners only” you need 2 or more groups.' : ''}</span></div>` : ''}
       <button class="btn ${done ? 'btn-primary' : 'btn-ghost'}" data-act="gen-ko" data-t="${t.id}" ${q.list.length < 2 ? 'disabled' : ''}>${ic('bracket', 16)}${done ? 'Generate bracket' : 'Generate anyway'}</button></div>`;
